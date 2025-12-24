@@ -1,0 +1,13 @@
+name: SideGate
+version: 1.0
+main: th.in.tamkungz.sidegate.SideGate
+api-version: 1.20
+depend: [ProtocolLib]
+commands:
+  sidegate:
+    description: Main command for SideGate
+    usage: /sidegate reload
+permissions:
+  sidegate.admin:
+    description: Allows managing the SideGate
+    default: op

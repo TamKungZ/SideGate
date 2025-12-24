@@ -1,0 +1,30 @@
+# SideGate Configuration
+
+# Toggle the Guest Mode system.
+enable-guest-mode: true
+
+# IMPORTANT:
+# Set to 'false' to allow Premium players to join normally (with skins).
+# Set to 'true' if you want EVERYONE to join as Guest (Offline Mode).
+allow-all-guests: false
+
+# Add cracked players here. Only these names will bypass authentication.
+allowed-guests:
+  - "TamKungZ_"
+  - "lyfe"
+  # - "AnotherCrackedFriend"
+
+# Settings for Guests
+guest-settings:
+  default-gamemode: "SURVIVAL"
+  chat-prefix: "&7[Guest] &r"
+
+messages:
+  join-title: "&cACCESS RESTRICTED"
+  join-subtitle: "&7Guest Mode"
+  join-message:
+    - "&c=================================="
+    - "&6 Welcome to SideGate Protocol"
+    - "&7 Account Status: &cGuest (Non-License)"
+    - "&7 You have restricted gameplay access."
+    - "&c=================================="

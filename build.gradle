@@ -1,0 +1,100 @@
+plugins {
+    id 'java'
+    id 'io.github.goooler.shadow' version '8.1.8'
+    id 'xyz.jpenilla.run-paper' version '3.0.2'
+}
+
+group = 'th.in.tamkungz.sidegate'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "jitpack-repo"
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "loohpjames"
+        url = "https://repo.loohpjames.com/repository/"
+    }
+}
+
+dependencies {
+    // compileOnly 'io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT'
+    // compileOnly 'io.papermc:paperlib:1.0.8'
+    compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
+
+    implementation 'net.dmulloy2:ProtocolLib:5.4.0'
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes(
+                'Implementation-Title': 'SideGate',
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'TamKungZ_',
+                'Specification-Title': 'SideGate',
+                'Specification-Version': project.version,
+                'Specification-Vendor': 'TamKungZ_',
+                'Description': '...',
+                'Website': 'https://github.com/TamKungZ/SideGate',
+                'Build-Jdk': System.getProperty('java.version'),
+                'Created-By': 'Gradle ' + gradle.gradleVersion
+        )
+    }
+}
+
+tasks.runServer {
+    minecraftVersion("1.20.1")
+}
+
+tasks.shadowJar {
+    archiveClassifier.set('')
+}
+
+tasks.runServer {
+    doFirst {
+        copy {
+            from(tasks.shadowJar)
+            into("$buildDir/run/$serverName/plugins")
+        }
+    }
+}
+
+import xyz.jpenilla.runpaper.task.RunServer
+
+tasks.withType(xyz.jpenilla.runpaper.task.RunServer).configureEach {
+    doFirst {
+        def dest = layout.buildDirectory.dir("run/$name/plugins").get().asFile
+        copy {
+            from(tasks.shadowJar)
+            into(dest)
+        }
+        println "Copied plugin to $dest"
+    }
+}
+
+/////////////////////////////
+// Paper (auto-dl by Gradle)
+/////////////////////////////
+
+tasks.register("runPaper1201", RunServer) {
+    minecraftVersion("1.20.1")
+}
